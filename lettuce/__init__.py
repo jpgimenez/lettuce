@@ -22,6 +22,7 @@ release = 'kryptonite'
 import os
 import sys
 import traceback
+import imp
 try:
     from imp import reload
 except ImportError:
@@ -71,7 +72,7 @@ __all__ = [
 
 try:
     terrain = fs.FileSystem._import("terrain")
-    reload(terrain)
+    imp.reload(terrain)
 except Exception as e:
     if not "No module named terrain" in str(e):
         string = 'Lettuce has tried to load the conventional environment ' \
@@ -111,7 +112,7 @@ class Runner(object):
         sys.path.insert(0, base_path)
         self.loader = fs.FeatureLoader(base_path, root_dir)
         self.verbosity = verbosity
-        self.scenarios = scenarios and map(int, scenarios.split(",")) or None
+        self.scenarios = scenarios and list(map(int, scenarios.split(","))) or None
         self.failfast = failfast
         if auto_pdb:
             autopdb.enable(self)
@@ -143,7 +144,7 @@ class Runner(object):
         if enable_jsonreport:
             jsonreport_output.enable(filename=jsonreport_filename)
 
-        reload(output)
+        imp.reload(output)
 
         self.output = output
 
@@ -169,7 +170,7 @@ class Runner(object):
         try:
             self.loader.find_and_load_step_definitions()
         except StepLoadingError as e:
-            print "Error loading step definitions:\n", e
+            print("Error loading step definitions:\n", e)
             return
 
         call_hook('before', 'all')
@@ -187,16 +188,16 @@ class Runner(object):
         except exceptions.LettuceSyntaxError as e:
             sys.stderr.write(e.msg)
             failed = True
-        except exceptions.NoDefinitionFound, e:
+        except exceptions.NoDefinitionFound as e:
             sys.stderr.write(e.msg)
             failed = True
         except:
             if not self.failfast:
                 e = sys.exc_info()[1]
-                print "Died with %s" % str(e)
+                print("Died with %s" % str(e))
                 traceback.print_exc()
             else:
-                print
+                print()
                 print ("Lettuce aborted running any more tests "
                        "because was called with the `--failfast` option")
 

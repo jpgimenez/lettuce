@@ -38,7 +38,7 @@ DJANGO_VERSION = StrictVersion(django.get_version())
 
 
 class Command(BaseCommand):
-    help = u'Run lettuce tests all along installed apps'
+    help = 'Run lettuce tests all along installed apps'
     args = '[PATH to feature file or folder]'
 
     if DJANGO_VERSION < StrictVersion('1.7'):
@@ -134,7 +134,7 @@ class Command(BaseCommand):
 
     def get_paths(self, args, apps_to_run, apps_to_avoid):
         if args:
-            for path, exists in zip(args, map(os.path.exists, args)):
+            for path, exists in zip(args, list(map(os.path.exists, args))):
                 if not exists:
                     sys.stderr.write("You passed the path '%s', but it does not exist.\n" % path)
                     sys.exit(1)

@@ -29,8 +29,7 @@ class NoDefinitionFound(Exception):
     def __init__(self, step):
         self.step = step
 
-        error = filter(lambda x : 0 <= ord(x) <= 127,
-                       'The step r"%s" is not defined' % self.step.sentence)
+        error = [x for x in 'The step r"%s" is not defined' % self.step.sentence if 0 <= ord(x) <= 127]
         super(NoDefinitionFound, self).__init__(error)
 
 
@@ -49,7 +48,7 @@ class ReasonToFail(object):
         else:
             msg = exc.args[0] if exc.args else ''
 
-        if isinstance(msg, basestring):
+        if isinstance(msg, str):
             self.cause = utf8_string(msg)
         self.traceback = utf8_string(traceback.format_exc(exc))
 
