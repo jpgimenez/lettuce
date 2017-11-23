@@ -256,7 +256,7 @@ class Step(object):
         method_name = unicodedata.normalize('NFKD', method_name) \
                       .encode('ascii', 'ignore')
         method_name = '%s(step%s)' % (
-            "_".join(re.findall("\w+", method_name)).lower(),
+            "_".join(re.findall("\w+", str(method_name))).lower(),
             attribute_names and (", %s" % ", ".join(attribute_names)) or "")
 
         return method_name, sentence
