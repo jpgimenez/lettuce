@@ -12,3 +12,10 @@ tests/integration/django/dill/garden-db.sqlite
 tests/integration/django/grocery/grocery-db.sqlite
 .tox
 ./_public
+.idea/
+bin/
+include/
+lib/
+lib64
+man/
+pip-selfcheck.json
